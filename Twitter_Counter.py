@@ -7,13 +7,14 @@
 ###                             ###
 ###################################
 
-import re
+import re, textwrap
 import pandas as pd
 import numpy as np
-from TwitterAPI import TwitterAPI
-from TwitterAPI import TwitterRestPager
+import argparse
 
 #NOTE: Must have TwitterAPI Installed
+from TwitterAPI import TwitterAPI
+from TwitterAPI import TwitterRestPager
 
 #Insert Your Twitter Credentials Here
 from mycredentials import *
@@ -98,7 +99,7 @@ def counter(hashtag, df, limit=None):
 	 
 
 
-def collect_tweets_for_hashtags(hashtags):
+def collect_tweets_for_hashtags(hashtags, limit):
 
 	for hashtag in hashtags:
 
@@ -110,7 +111,7 @@ def collect_tweets_for_hashtags(hashtags):
 		df = pd.DataFrame(columns=header, index = index)
 
 		#Count Tweets
-		counter(hashtag, df, 100)
+		counter(hashtag, df, limit)
 
 		#Save the Results
 		file_name = hashtag.replace('#', '')+"_Tweets.csv"
@@ -121,6 +122,31 @@ def collect_tweets_for_hashtags(hashtags):
 
 
 #INPUT YOUR DESIRED HASHTAGS INTO THE ACTIVE LIST BELOW.
-#Test Run
-hashtags = ["#Obama", "#Potus"]
-collect_tweets_for_hashtags(hashtags)
+#Or Run from the Command Line
+#hashtags = ["#Obama", "#Hilary"]
+#collect_tweets_for_hashtags(hashtags)
+
+if __name__=="__main__":
+	parser = argparse.ArgumentParser(description='Prepare input file',
+	        formatter_class=argparse.RawTextHelpFormatter)
+	parser.add_argument('hashtags', nargs='+', type=str, 
+		help=textwrap.dedent("""\
+			Input a single hashtag or multiple hashtags, e.g.
+
+			'#Hilary' 
+
+			or
+
+			'#Hilary' '#Obama'
+
+			The final command takes the following format:
+
+			python Twitter_Counter.py '#Hilary' '#Obama' '#Biden'
+
+			"""
+			))
+	parser.add_argument('-l', '--limit', default=None, type=int, help="max desired number of results per hashtag, default=None")
+
+	args = parser.parse_args()
+	collect_tweets_for_hashtags(args.hashtags, args.limit)
+
