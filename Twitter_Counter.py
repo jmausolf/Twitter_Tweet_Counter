@@ -18,49 +18,83 @@ from TwitterAPI import TwitterRestPager
 #Insert Your Twitter Credentials Here
 from mycredentials import *
 
-#consumer_key = " "
-#consumer_secret = " "
-#access_token_key = " "
-#access_token_secret = " "
 
-
+#API User Authorization
 api = TwitterAPI(consumer_key, consumer_secret, access_token_key, access_token_secret)
 
 
 def remove_non_ascii_2(text):
 	return re.sub(r'[^\x00-\x7F]+', "'", text)
 
+def extract_tweet_info(item, count, df):
+	"""
+	Utility to Prevent Code Duplication in Counter
+	"""
 
-def counter(hashtag, df):
+	n = len(df.index)
+	tweet_raw = item['text']
+	tweet = remove_non_ascii_2(tweet_raw)
+
+	#Clean up date and time
+	date_raw = item['created_at'].split(' ')
+	date = date_raw[1]+" "+date_raw[2]+", "+date_raw[5]
+	time = date_raw[3]
+
+	#Add Row to Data Frame
+	df.loc[n] = 0
+	df.ix[n, "DATE"] = date
+	df.ix[n, "TIME"] = time
+	df.ix[n, "COUNT"] = count
+	df.ix[n, "HASHTAG"] = hashtag
+	df.ix[n, "TWEET"] = tweet
+
+def counter(hashtag, df, limit=None):
 	count = 0
 
+	#Initialize Twitter Rest Pager
 	r = TwitterRestPager(api, 'search/tweets', {'q':hashtag, 'count':100})
-	for item in r.get_iterator(wait=6):
-		print count
-		if 'text' in item:
-			count += 1
-			n = len(df.index)
 
-			tweet0 = item['text']
-			tweet = remove_non_ascii_2(tweet0)
+	#Limit Option
+	if limit is not None:
+		print("requested tweets for hashtag is limited to {} tweets".format(limit))
+
+		for item in r.get_iterator(wait=6):
+
+			if 'text' in item:
+				if count <= limit:
+					
+					print(limit, count)
+					count += 1
+					
+					#Extract Tweet Info
+					extract_tweet_info(item, count, df)
+
+				else:
+					print("requested tweet limit reached...")
+					print("ending query for hashtag")
+					return
+
+			elif 'message' in item and item['code'] == 88:
+				print('SUSPEND, RATE LIMIT EXCEEDED: %s' % item['message'])
+				break
 			
-			#Clean up date and time
-			date0 = item['created_at'].split(' ')
-			date = date0[1]+" "+date0[2]+", "+date0[5]
-			time = date0[3]
 
-			#Add Row to Data Frame
-			df.loc[n] = 0
-			df.ix[n, "DATE"] = date
-			df.ix[n, "TIME"] = time
-			df.ix[n, "COUNT"] = count
-			df.ix[n, "HASHTAG"] = hashtag
-			df.ix[n, "TWEET"] = tweet
+	#No Limit
+	else:
 
+		for item in r.get_iterator(wait=6):
+			
+			if 'text' in item:
 
-		elif 'message' in item and item['code'] == 88:
-			print('SUSPEND, RATE LIMIT EXCEEDED: %s' % item['message'])
-			break
+				print(count)
+				count += 1
+
+				#Extract Tweet Info
+				extract_tweet_info(item, count, df)
+
+			elif 'message' in item and item['code'] == 88:
+				print('SUSPEND, RATE LIMIT EXCEEDED: %s' % item['message'])
+				break
 	 
 
 #Setup Initial Data Frame
@@ -74,10 +108,10 @@ df = pd.DataFrame(columns=header, index = index)
 	#hashtags = ["#FeeltheBern", "#Bernie2016", "#DebateWithBernie"]
 	#hashtags = ["#OWS", "#OccupyWallStreet"]
 
-hashtags = ["#OccupyWallStreet"]
+hashtags = ["#Hillary"]
 for hashtag in hashtags:
 	print "Collecting tweets for hashtag ", hashtag, "..."
-	counter(hashtag, df)
+	counter(hashtag, df, 100)
 print df
 
 #Save the Results
