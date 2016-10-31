@@ -26,7 +26,7 @@ api = TwitterAPI(consumer_key, consumer_secret, access_token_key, access_token_s
 def remove_non_ascii_2(text):
 	return re.sub(r'[^\x00-\x7F]+', "'", text)
 
-def extract_tweet_info(item, count, df):
+def extract_tweet_info(item, count, df, hashtag):
 	"""
 	Utility to Prevent Code Duplication in Counter
 	"""
@@ -67,7 +67,7 @@ def counter(hashtag, df, limit=None):
 					count += 1
 					
 					#Extract Tweet Info
-					extract_tweet_info(item, count, df)
+					extract_tweet_info(item, count, df, hashtag)
 
 				else:
 					print("requested tweet limit reached...")
@@ -90,48 +90,37 @@ def counter(hashtag, df, limit=None):
 				count += 1
 
 				#Extract Tweet Info
-				extract_tweet_info(item, count, df)
+				extract_tweet_info(item, count, df, hashtag)
 
 			elif 'message' in item and item['code'] == 88:
 				print('SUSPEND, RATE LIMIT EXCEEDED: %s' % item['message'])
 				break
 	 
-def setup_df():
-	#Setup Initial Data Frame
-	header = ["DATE", "TIME", "COUNT", "HASHTAG", "TWEET"]
-	index = np.arange(0)
-	df = pd.DataFrame(columns=header, index = index)
 
 
-#Setup Initial Data Frame
-#header = ["DATE", "TIME", "COUNT", "HASHTAG", "TWEET"]
-#index = np.arange(0)
-#df = pd.DataFrame(columns=header, index = index)
+def collect_tweets_for_hashtags(hashtags):
+
+	for hashtag in hashtags:
+
+		print ("Collecting tweets for {} ...".format(hashtag))
+
+		#Setup Initial Data Frame
+		header = ["DATE", "TIME", "COUNT", "HASHTAG", "TWEET"]
+		index = np.arange(0)
+		df = pd.DataFrame(columns=header, index = index)
+
+		#Count Tweets
+		counter(hashtag, df, 100)
+
+		#Save the Results
+		file_name = hashtag.replace('#', '')+"_Tweets.csv"
+		print("saving results for {} to {}...".format(hashtag, file_name))
+		df.to_csv(file_name, encoding='utf-8')
+
+
 
 
 #INPUT YOUR DESIRED HASHTAGS INTO THE ACTIVE LIST BELOW.
-	#Some Examples:
-	#hashtags = ["#FeeltheBern", "#Bernie2016", "#DebateWithBernie"]
-	#hashtags = ["#OWS", "#OccupyWallStreet"]
-
-hashtags = ["#Election", "#CNN"]
-for hashtag in hashtags:
-
-	print ("Collecting tweets for {} ...".format(hashtag))
-
-	#Setup Initial Data Frame
-	header = ["DATE", "TIME", "COUNT", "HASHTAG", "TWEET"]
-	index = np.arange(0)
-	df = pd.DataFrame(columns=header, index = index)
-
-	#Count Tweets
-	counter(hashtag, df, 100)
-
-	#Save the Results
-	file_name = hashtag.replace('#', '')+"_Tweets.csv"
-	print("saving results for {} to {}...".format(hashtag, file_name))
-	df.to_csv(file_name, encoding='utf-8')
-
-
-
-
+#Test Run
+hashtags = ["#Obama", "#Potus"]
+collect_tweets_for_hashtags(hashtags)
