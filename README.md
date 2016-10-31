@@ -7,7 +7,11 @@ This code uses the TwitterAPI to return a CSV of tweets and metadata for a given
    If you have pip installed, you can simply `pip install TwitterAPI` in the Shell
 
 
-To run, (1) simply input your Twitter authentication credentials, and (2) run the query for one or more hashtags.
+# Running the Code
+
+* **First: Clone the repository `git clone https://github.com/jmausolf/Twitter_Tweet_Counter`**
+
+* **Next: (1) simply input your Twitter authentication credentials, and (2) run the query for one or more hashtags.**
 
 ## 1. Twitter Authentication Credentials
 
