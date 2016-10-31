@@ -16,10 +16,12 @@ from TwitterAPI import TwitterRestPager
 #NOTE: Must have TwitterAPI Installed
 
 #Insert Your Twitter Credentials Here
-consumer_key = " "
-consumer_secret = " "
-access_token_key = " "
-access_token_secret = " "
+from mycredentials import *
+
+#consumer_key = " "
+#consumer_secret = " "
+#access_token_key = " "
+#access_token_secret = " "
 
 
 api = TwitterAPI(consumer_key, consumer_secret, access_token_key, access_token_secret)
@@ -72,7 +74,7 @@ df = pd.DataFrame(columns=header, index = index)
 	#hashtags = ["#FeeltheBern", "#Bernie2016", "#DebateWithBernie"]
 	#hashtags = ["#OWS", "#OccupyWallStreet"]
 
-hashtags = ["#FeeltheBern", "#Bernie2016", "#DebateWithBernie"]
+hashtags = ["#OccupyWallStreet"]
 for hashtag in hashtags:
 	print "Collecting tweets for hashtag ", hashtag, "..."
 	counter(hashtag, df)
