@@ -1,10 +1,11 @@
-# Twitter_Tweet_Counter
-Repository builds a pandas database of tweets given a hashtag query or list of hashtags. The results are written to a CSV.
+# Twitter Tweet Counter
 
-* Code uses dependency of @geduldig TwitterAPI. 
-    Download Here: https://github.com/geduldig/TwitterAPI
+This code uses the TwitterAPI to return a CSV of tweets and metadata for a given hashtag. One or more hashtags may be specifed at once. 
 
-* Some modifications of @gedulig's original code. 
+* Required dependency of [TwitterAPI](https://github.com/geduldig/TwitterAPI)
+
+   If you have pip installed, you can simply `pip install TwitterAPI` in the Shell
+
 
 To run, (1) simply input your Twitter authentication credentials, and (2) run the query for one or more hashtags.
 
