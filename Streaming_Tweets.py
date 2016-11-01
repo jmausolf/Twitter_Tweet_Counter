@@ -1,4 +1,14 @@
+###################################
+###                             ###
+###      Joshua G. Mausolf      ###
+###   Department of Sociology   ###
+###    Computation Institute    ###
+###    University of Chicago    ###
+###                             ###
+###################################
+
 import csv, os, re
+import argparse, textwrap
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
@@ -26,9 +36,6 @@ class TwitterListener(StreamListener):
 
     def on_status(self, status):
         try:
-            #Broken Attempt
-            #filename = str(self.keyword)+".csv"
-            #with open(filename, 'a') as f:
             with open('streaming_results.csv', 'a') as f:
                 writer = csv.writer(f)
 
@@ -49,9 +56,14 @@ class TwitterListener(StreamListener):
 
 
 #Wrapper Function
-def streaming_tweets(keyword):
+def streaming_tweets(keywords, language=["en"]):
+    """
+    @keywords   ==  search keywords, e.g. ["ImWithHer", "Trump"]
+    @languages  ==  desired language, e.g.: ["en"]
 
-    filename = keyword.replace(" ", "").replace("#", "")+".csv"
+    """
+
+    filename = keywords[0].replace(" ", "").replace("#", "")+".csv"
     print(filename)
 
     try:
@@ -60,7 +72,7 @@ def streaming_tweets(keyword):
             try:
                 #Initialize Tweepy Streamer
                 twitterStream = Stream(auth, TwitterListener())
-                twitterStream.filter(track=[keyword])
+                twitterStream.filter(track=keywords, languages=language)
             except Exception as error:
                 print(error)
                 print ("[*] saving results to {}".format(filename))
@@ -72,5 +84,30 @@ def streaming_tweets(keyword):
         os.rename("streaming_results.csv", filename)
 
 
-streaming_tweets("#ImWithHer")
+#INSERT YOUR DESIRED SEARCH TERMS
+#streaming_tweets(["#ImWithHer", "#Trump"])
+
+if __name__=="__main__":
+    parser = argparse.ArgumentParser(description='Prepare input file',
+            formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('keywords', nargs='+', type=str, 
+        help=textwrap.dedent("""\
+            Input one or more keywords to search
+
+            "#ImWithHer"
+
+            or
+
+            "#ImWithHer" "#Hillary"
+
+            The final command takes the following format:
+
+            python Streaming_Tweets.py "#ImWithHer" "#Hillary"
+
+            """
+            ))
+
+    args = parser.parse_args()
+    streaming_tweets(args.keywords)
+
 
