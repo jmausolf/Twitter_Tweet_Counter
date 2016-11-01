@@ -64,8 +64,9 @@ python Twitter_Counter.py '#OccupyWallStreet' '#OWS'
 
 For each hashtag, the script will search Twitter using the RestAPI, and return a .csv of the most recent tweets. The CSV will include the following information: DATE, TIME, COUNT, HASHTAG, and TWEET.
 
-** NOTE: The above examples will return all available tweets (going back a week) **
-** Some hashtags include hundreds of thousands of tweets, and this will take considerable time **
+**NOTE: The above examples will return all available tweets (going back a week)**
+
+**Some hashtags include hundreds of thousands of tweets, and this will take considerable time**
 
 ### Example: Specified Limit (Faster)
 
@@ -95,3 +96,5 @@ python Streaming_Tweets.py "#ImWithHer" "#Hillary"
 ```
 
 Once executed, this script will run until the users haults the script. To exit the script use your keyboard to interupt using `Control`+`C`.
+
+---
