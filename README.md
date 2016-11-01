@@ -2,7 +2,7 @@
 
 This code uses Twitter's REST and STREAMING API's to return a CSV of tweets for given criteria.
 
-** Required Dependencies: ** 
+### Required Dependencies:
 
 * [TwitterAPI](https://github.com/geduldig/TwitterAPI) : `pip install TwitterAPI` in the Shell
 * [Tweepy](http://tweepy.readthedocs.io/en/v3.5.0/): `pip install tweepy` in Shell
@@ -10,9 +10,11 @@ This code uses Twitter's REST and STREAMING API's to return a CSV of tweets for 
 
 # Running the Code
 
-* **1. Clone the repository `git clone https://github.com/jmausolf/Twitter_Tweet_Counter`**
-* **2. Input Your Twitter Authentication
-* **3. Run Either (A) REST API or (B) STREAMING API
+* ####1. Clone the repository `git clone https://github.com/jmausolf/Twitter_Tweet_Counter`
+
+* ####2. Input Your Twitter Authentication
+
+* ####3. Run Either (A) REST API or (B) STREAMING API
 
 ## 1. Clone the Repo
 
@@ -36,7 +38,7 @@ access_token_key = "your_access_token_key"
 access_token_secret = "your_access_token_secret"
 ```
 
-## 3. Run the API Query
+## 3. Run the REST/STREAMING API Queries
 
 
 ### 3A. REST API: Run the Query for One or More Hashtags
