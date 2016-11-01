@@ -66,7 +66,7 @@ For each hashtag, the script will search Twitter using the RestAPI, and return a
 
 **NOTE: The above examples will return all available tweets (going back a week)**
 
-**Some hashtags include hundreds of thousands of tweets, and this will take considerable time**
+*Some hashtags include hundreds of thousands of tweets, and this will take considerable time*
 
 ### Example: Specified Limit (Faster)
 
