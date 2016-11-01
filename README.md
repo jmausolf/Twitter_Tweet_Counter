@@ -7,6 +7,7 @@ This code uses Twitter's REST and STREAMING API's to return a CSV of tweets for 
 * [TwitterAPI](https://github.com/geduldig/TwitterAPI) : `pip install TwitterAPI` in the Shell
 * [Tweepy](http://tweepy.readthedocs.io/en/v3.5.0/): `pip install tweepy` in Shell
 
+---
 
 # Running the Code
 
@@ -16,9 +17,13 @@ This code uses Twitter's REST and STREAMING API's to return a CSV of tweets for 
 
 * ####3. Run Either (A) REST API or (B) STREAMING API
 
+---
+
 ## 1. Clone the Repo
 
 **Using the Shell: `git clone https://github.com/jmausolf/Twitter_Tweet_Counter`**
+
+---
 
 ## 2. Twitter Authentication Credentials
 
@@ -38,14 +43,13 @@ access_token_key = "your_access_token_key"
 access_token_secret = "your_access_token_secret"
 ```
 
-## 3. Run the REST/STREAMING API Queries
+---
 
-
-### 3A. REST API: Run the Query for One or More Hashtags
+## 3A. REST API: Run the Query for One or More Hashtags
 
 To run the script, open terminal and type a query:
 
-#### Example: No Limit (Can Take a Long Time)
+### Example: No Limit (Can Take a Long Time)
 
 ```Shell
 
@@ -63,7 +67,7 @@ For each hashtag, the script will search Twitter using the RestAPI, and return a
 ** NOTE: The above examples will return all available tweets (going back a week) **
 ** Some hashtags include hundreds of thousands of tweets, and this will take considerable time **
 
-#### Example: Specified Limit (Faster)
+### Example: Specified Limit (Faster)
 
 ```Shell
 
@@ -76,11 +80,11 @@ python Twitter_Counter.py '#OccupyWallStreet' '#OWS' --limit 100
 
 ```
 
-### 3B. STREAMING API: Run the Query for Particular Search Terms
+## 3B. STREAMING API: Run the Query for Particular Search Terms
 
 This script will initialize Twitter's STREAMING API using [Tweepy](http://tweepy.readthedocs.io/en/v3.5.0/).
 
-#### Example: Streaming for Hillary Tweets
+### Example: Streaming for Hillary Tweets
 
 ```
 #One Keyword
@@ -90,3 +94,4 @@ python Streaming_Tweets.py "Hillary"
 python Streaming_Tweets.py "#ImWithHer" "#Hillary"
 ```
 
+Once executed, this script will run until the users haults the script. To exit the script use your keyboard to interupt using `Control`+`C`.
