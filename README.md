@@ -4,7 +4,7 @@ This code uses Twitter's REST and STREAMING API's to return a CSV of tweets for 
 
 ### Required Dependencies:
 
-* [TwitterAPI](https://github.com/geduldig/TwitterAPI) : `pip install TwitterAPI` in the Shell
+* [TwitterAPI](https://github.com/geduldig/TwitterAPI) : `pip install TwitterAPI` in Shell
 * [Tweepy](http://tweepy.readthedocs.io/en/v3.5.0/): `pip install tweepy` in Shell
 
 ---
