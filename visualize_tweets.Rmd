@@ -1,0 +1,73 @@
+---
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+#Get Tweet Files
+tweet_files <- list.files(pattern = "\\.csv$", full.names = TRUE)
+
+#Function to Get Tweet Names from Files
+get_tweet_names <- function(tweet_files){
+  tweet_names <- vector("character", length(tweet_files))
+  for (i in seq_along(tweet_files)){
+    raw <- tail(strsplit(head(strsplit(tweet_files, split="_")[[i]],1), split="./")[[1]],1)
+    hashtag <- paste("#", raw, sep="")
+    tweet_names[[i]] <- hashtag
+  }
+  return(tweet_names)
+}
+
+
+#Get Names
+tweet_source_names <- get_tweet_names(tweet_files)
+
+
+#Function to Load Tweets
+import_tweets <- function(tweet_file, index){
+  df <- read_csv(tweet_file)
+  
+  #Modify Tweet DF's
+  df <- df %>% 
+  mutate(COUNT = as.integer(base::rownames(.))) %>% 
+  select(DATE, COUNT)
+  
+  names(df) <- sub("^COUNT$", tweet_source_names[index], names(df))
+  return(df)
+
+}
+
+```
+
+```{r load_data}
+# Load Data
+tweets_dfs <- vector("list", length(tweet_files))
+for(i in seq_along(tweet_files)){
+  tweets_dfs[[i]] <- import_tweets(tweet_files[[i]], i)
+}
+
+# Join Tweets Data
+tweets_data <- Reduce(full_join, tweets_dfs) %>% 
+  gather(SOURCE, COUNT, -DATE)
+
+
+```
+
+
+
+
+
+
+```{r}
+
+#Visualize
+ggplot(tweets_data) +
+  geom_smooth(aes(DATE, COUNT, color = SOURCE))
+
+
+
+```
